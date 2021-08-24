@@ -1,0 +1,48 @@
+Q1:
+	SELECT department_name,CONCAT(first_name ,last_name)AS Name, hire_date,salary FROM employees e INNER JOIN  departments d ON (e.manager_id=d.manager_id) WHERE DATEDIFF(NOW(),hire_date)/365>15;
+
+Q2:	
+	SELECT manager_id, MIN(salary) FROM employees WHERE manager_id IS NOT NULL GROUP BY manager_id HAVING MIN(salary) > 6000 ORDER BY MIN(salary) DESC;
+	
+Q3:
+	1. SELECT employee_id,CONCAT(first_name ," ",last_name)AS Name,salary FROM emp_details_view where city='London';
+	2.SELECT last_name FROM employees WHERE first_name LIKE ('S%');
+	3.
+	4.SELECT upper(first_name),upper(city) FROM emp_details_view;
+	5.SELECT department_name,MAX(SALARY) FROM departments INNER JOIN employees ON departments.department_id=employees.department_id GROUP BY department_name;
+
+Q4:	
+	CREATE TABLE temp LIKE employees;
+	INSERT INTO temp SELECT * FROM employees GROUP BY email;
+	DROP TABLE employees;
+	ALTER TABLE temp RENAME TO employees ;
+Q5:
+	CREATE INDEX i_hire_date ON employees(hire_date);
+Q6:
+	CREATE VIEW employees_view AS SELECT employee_id,first_name,salary FROM employees;
+	  1 UPDATE employees_view SET SALARY = '6000' WHERE EMPLOYEE_ID = 105;
+	  2 DELETE FROM employees_view WHERE EMPLOYEE_ID=106;
+Q7:
+	SELECT j.job_title,d.department_name,CONCAT(e.first_name, ' ', e.last_name) AS full_name,jh.start_date FROM employees e INNER JOIN job_history jh ON e.employee_id = jh.employee_id
+       AND jh.start_date BETWEEN '1993-01-01' AND '1997-08-31' INNER JOIN jobs j ON jh.job_id = j.job_id INNER JOIN departments d ON jh.department_id = d.department_id;
+Q8:
+	SELECT CONCAT(e.first_name, ' ', e.last_name) AS full_name,j.job_title,jh.* FROM employees eINNER JOIN (SELECT MAX(start_date) AS starting_date,MAX(end_date) AS ending_date,
+         employee_id FROM job_history GROUP BY employee_id) jh ON e.employee_id = jh.employee_id INNER JOIN jobs j ON e.job_id = j.job_id WHERE e.commission_pct = 0;
+Q9:
+	SELECT E.first_name AS "Employee Name",M.first_name AS "Manager"FROM employees E LEFT OUTER JOIN employees MON E.manager_id = M.employee_id;
+Q10:
+	SELECT e.first_name,e.last_name,d.department_name,l.city,l.state_province FROM employees e INNER JOIN departments d ON e.department_id = d.department_id INNER JOIN locations l
+       ON d.location_id = l.location_id WHERE e.first_name LIKE '%z%';
+
+Q11:
+	SELECT e.first_name,e.last_name,d.department_id,d.department_name FROM departments d LEFT JOIN employees e ON d.department_id = e.department_id;
+Q12:
+	SELECT E.first_name, E.last_name, E.salary FROM employees E JOIN employees S ON E.salary < S.salary AND S.employee_id = 182;
+
+Q13:
+	SELECT E.first_name AS "Employee Name", M.first_name AS "Manager" FROM employees E JOIN employees M ON E.manager_id = M.employee_id;
+
+Q14:
+	1 db.users.find({},{"firstName":1,"age":1,_id:0}).sort({"age":-1});
+	2 db.users.find({gender:"M"},{_id:0});
+	3 db.users.find({age:57},{_id:0});
